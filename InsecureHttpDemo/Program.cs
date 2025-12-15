@@ -1,18 +1,9 @@
-// Program.cs для InsecureHttpDemo
+
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-// Налаштовуємо лише HTTP-порт 8081 (за замовчуванням).
-// У production ASP.NET Core це робиться через appsettings.json або Kestrel config, 
-// але для демо використовуємо конфігурацію за замовчуванням.
-// Для явного налаштування: 
-// builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(8081));
-
-// =========================================================
-// 1. Головна сторінка з формою
-// =========================================================
 app.MapGet("/", () => Results.Content(
     """
     <html>
@@ -29,9 +20,7 @@ app.MapGet("/", () => Results.Content(
     </html>
     """, "text/html; charset=utf-8"));
 
-// =========================================================
-// 2. POST-ендпоінт для отримання даних форми
-// =========================================================
+
 app.MapPost("/login", ([FromForm] string username, [FromForm] string password) =>
 {
     Console.WriteLine($"[HTTP] Login attempt received: User='{username}', Pass='{password}'");
