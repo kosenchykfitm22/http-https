@@ -1,27 +1,20 @@
-// Program.cs для SecureHttpsDemo
+
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Явне налаштування Kestrel для використання HTTPS на порту 8443
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(8443, listenOptions =>
     {
-        // !!! ДЛЯ ДЕМО: Використовуйте 'dotnet dev-certs https' 
-        // або власні сертифікати (server.crt/server.key)
         listenOptions.UseHttps(); 
     });
 });
 
 var app = builder.Build();
 
-// Використання нашого Middleware для впровадження заголовків
 app.UseSecurityHeaders(); 
 
-// =========================================================
-// Головна сторінка з формою
-// =========================================================
 app.MapGet("/", () => Results.Content(
     """
     <html>
@@ -38,9 +31,6 @@ app.MapGet("/", () => Results.Content(
     </html>
     """, "text/html; charset=utf-8"));
 
-// =========================================================
-// POST-ендпоінт для отримання даних форми
-// =========================================================
 app.MapPost("/login", ([FromForm] string username, [FromForm] string password) =>
 {
     Console.WriteLine($"[HTTPS] Login attempt received for user: {username}");
